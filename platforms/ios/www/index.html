@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.17.2/build/cssreset/cssreset-min.css">
+        <script type="text/javascript" src="cordova.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+        <style>
+            h1
+            {
+                font-size: 1.75em;
+                font-family: Georgia;
+                font-weight: bold;
+            }
+            #container
+            {
+                margin: 3px;
+            }
+        </style>
+        <script>
+            var xmlhttp;
+
+            window.onload = function()
+            {
+                //document.addEventListener('deviceready', init);
+                init();
+            }
+
+            function init()
+            {
+                document.getElementById('btnGetForecast').addEventListener('click', getData);
+            }
+
+            function getData()
+            {
+                xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange= processResult;
+                var url = "http://wsf.cdyne.com/WeatherWS/Weather.asmx/GetCityWeatherByZIP?ZIP=";
+                url += document.getElementById('zip').value;             
+                xmlhttp.open("GET", url, false);
+                xmlhttp.send();
+            }
+
+            function processResult()
+            {
+                console.log(xmlhttp);
+                alert("Hi");
+                if(xmlhttp.readyState==4 && xmlhttp.status == 200)
+                {
+                    var theXML = xmlhttp.responseXML.documentElement;
+                    var city = theXML.getElementsByTagName('City')[0].firstChild.nodeValue;
+                    var state = theXML.getElementsByTagName('State')[0].firstChild.nodeValue;
+                    var temperature = theXML.getElementsByTagName('Temperature')[0].firstChild.nodeValue;
+                    var relativeHumidity = theXML.getElementsByTagName('RelativeHumidity')[0].firstChild.nodeValue;
+
+                    var output = "Weather For: ";
+                    output += city +", " + state;
+                    output += "<br/>Temperature: " + temperature;
+
+                    document.getElementById('result').innerHTML = output;
+
+                       
+                }
+            }
+
+
+        </script>
+        <title>Weather</title>
+    </head>
+    <body>
+        <div id="container">
+        <h1>Get The Weather</h1>
+        <label for="zip">Zip Code</label>
+        <input type="number" id="zip" />
+        <button id="btnGetForecast">Get Forecast</button>
+        <div id="result"></div> 
+        </div> <!-- container -->
+    </body>
+</html>
