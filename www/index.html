@@ -49,8 +49,6 @@
 
             function processResult()
             {
-                console.log(xmlhttp);
-                alert("Hi");
                 if(xmlhttp.readyState==4 && xmlhttp.status == 200)
                 {
                     var theXML = xmlhttp.responseXML.documentElement;
@@ -58,11 +56,15 @@
                     var state = theXML.getElementsByTagName('State')[0].firstChild.nodeValue;
                     var temperature = theXML.getElementsByTagName('Temperature')[0].firstChild.nodeValue;
                     var relativeHumidity = theXML.getElementsByTagName('RelativeHumidity')[0].firstChild.nodeValue;
+                    var description = theXML.getElementsByTagName('Description')[0].firstChild.nodeValue;
+                    var wind = theXML.getElementsByTagName('Wind')[0].firstChild.nodeValue;
 
                     var output = "Weather For: ";
                     output += city +", " + state;
                     output += "<br/>Temperature: " + temperature;
                     output += "<br/>Humidity: " + relativeHumidity;
+                    output += "<br/>Description: " + description;
+                    output += "<br/>WInd: " + wind;
                     document.getElementById('result').innerHTML = output;
 
                        
